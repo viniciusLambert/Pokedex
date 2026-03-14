@@ -1,6 +1,36 @@
 package main
 
-func getMap() error {
-	maps := pokeApi.getMap
+import (
+	"fmt"
+	"log"
+)
+
+func commandMapf(cfg *config) error {
+	locations, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationsURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cfg.nextLocationsURL = locations.Next
+	cfg.prevLocationsURL = locations.Previous
+
+	for _, loc := range locations.Results {
+		fmt.Println(loc.Name)
+	}
+	return nil
+}
+
+func commandMapb(cfg *config) error {
+	locations, err := cfg.pokeapiClient.ListLocations(cfg.prevLocationsURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cfg.nextLocationsURL = locations.Next
+	cfg.prevLocationsURL = locations.Previous
+
+	for _, loc := range locations.Results {
+		fmt.Println(loc.Name)
+	}
 	return nil
 }

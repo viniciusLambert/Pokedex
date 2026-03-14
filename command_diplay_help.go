@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func diplayHelp() error {
+func commandHelp(cfg *config) error {
 	commands := getCommands()
 	fmt.Printf("Welcome to the Pokedex!\nUsage:\n\n")
 	for name, cmd := range commands {

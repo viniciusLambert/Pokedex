@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/viniciusLambert/Pokedex/intnternal/pokeapi"
+	"github.com/viniciusLambert/Pokedex/internal/pokeapi"
 )
 
 type config struct {
@@ -15,34 +15,40 @@ type config struct {
 	prevLocationsURL *string
 }
 
-func startRepl() {
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
-	commands := getCommands()
+
 	for {
 		fmt.Print("Pokedex > ")
-		newScan := scanner.Scan()
-		if newScan {
-			text := scanner.Text()
-			command := cleanInput(text)
-			commandFound := false
-			for cmd, structure := range commands {
-				if cmd == command[0] {
-					commandFound = true
-					_ = structure.callback()
-				}
+		scanner.Scan()
+
+		text := cleanInput(scanner.Text())
+		if len(text) == 0 {
+			continue
+		}
+
+		commandName := text[0]
+
+		command, exists := getCommands()[commandName]
+		if exists {
+			err := command.callback(cfg)
+			if err != nil {
+				fmt.Println(err)
 			}
 
-			if !commandFound {
-				fmt.Println("Unknown command")
-			}
+			continue
+		} else {
+			fmt.Println("Unknown command")
+			continue
 		}
+
 	}
 }
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -55,12 +61,17 @@ func getCommands() map[string]cliCommand {
 		"help": {
 			name:        "help",
 			description: "Call help command",
-			callback:    diplayHelp,
+			callback:    commandHelp,
 		},
 		"map": {
 			name:        "map",
 			description: "get next 20 maps",
-			callback:    getMap,
+			callback:    commandMapf,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Get previuous 20 maps",
+			callback:    commandMapb,
 		},
 	}
 }
