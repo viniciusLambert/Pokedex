@@ -6,7 +6,7 @@ import (
 )
 
 func commandMapf(cfg *config) error {
-	locations, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationsURL, cfg.pokecacheCache)
+	locations, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationsURL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -21,7 +21,7 @@ func commandMapf(cfg *config) error {
 }
 
 func commandMapb(cfg *config) error {
-	locations, err := cfg.pokeapiClient.ListLocations(cfg.prevLocationsURL, cfg.pokecacheCache)
+	locations, err := cfg.pokeapiClient.ListLocations(cfg.prevLocationsURL)
 	if err != nil {
 		log.Fatal(err)
 	}

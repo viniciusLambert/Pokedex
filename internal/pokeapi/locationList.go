@@ -5,11 +5,9 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-
-	"github.com/viniciusLambert/Pokedex/internal/pokecache"
 )
 
-func (c *Client) ListLocations(pageURL *string, cache *pokecache.Cache) (RespShallowLocations, error) {
+func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 	url := baseURL + "/location-area"
 	var reqBody []byte
 
@@ -17,7 +15,7 @@ func (c *Client) ListLocations(pageURL *string, cache *pokecache.Cache) (RespSha
 		url = *pageURL
 	}
 
-	entry, exist := cache.Get(url)
+	entry, exist := c.cache.Get(url)
 	if exist {
 		reqBody = entry
 	} else {
@@ -37,7 +35,7 @@ func (c *Client) ListLocations(pageURL *string, cache *pokecache.Cache) (RespSha
 			return RespShallowLocations{}, err
 		}
 
-		cache.Add(url, reqBody)
+		c.cache.Add(url, reqBody)
 	}
 
 	var locationList RespShallowLocations

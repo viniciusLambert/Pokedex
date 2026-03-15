@@ -15,13 +15,13 @@ type cacheEntry struct {
 	val       []byte
 }
 
-func NewCache(interval time.Duration) *Cache {
+func NewCache(interval time.Duration) Cache {
 	cache := Cache{
 		entry: map[string]cacheEntry{},
 		mu:    sync.Mutex{},
 	}
 
-	cache.reapLoop(interval)
+	go cache.reapLoop(interval)
 
-	return &cache
+	return cache
 }

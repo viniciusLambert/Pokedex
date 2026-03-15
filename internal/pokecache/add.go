@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (c *Cache) Add(key string, val []byte) error {
+func (c *Cache) Add(key string, val []byte) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -13,5 +13,4 @@ func (c *Cache) Add(key string, val []byte) error {
 		createdAt: time.Now(),
 		val:       val,
 	}
-	return nil
 }

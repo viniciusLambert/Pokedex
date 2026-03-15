@@ -4,6 +4,7 @@ import "time"
 
 func (c *Cache) reapLoop(duration time.Duration) {
 	ticker := time.NewTicker(duration)
+
 	for range ticker.C {
 		c.reap(time.Now().UTC(), duration)
 	}
