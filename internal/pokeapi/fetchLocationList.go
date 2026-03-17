@@ -3,6 +3,7 @@ package pokeapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -17,6 +18,7 @@ func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 
 	entry, exist := c.cache.Get(url)
 	if exist {
+		fmt.Println("Getting from cache...")
 		reqBody = entry
 	} else {
 		req, err := http.NewRequest("GET", url, nil)
