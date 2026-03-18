@@ -26,6 +26,7 @@ func commandCatchPokemon(cfg *config, args ...string) error {
 	if pokeballPower > captureTreshHold {
 		fmt.Printf("%s was caught!\n", args[0])
 		cfg.pokedex[args[0]] = pokemon
+		fmt.Println("You may now inspect it with the inspect command.")
 	} else {
 		fmt.Printf("%s escaped!\n", args[0])
 	}
